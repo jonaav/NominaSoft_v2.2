@@ -1,0 +1,37 @@
+﻿@model Modelo.Entidades.Contrato;  
+
+
+@{
+    ViewData["Title"] = "BuscarEmpleado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+
+    <div class="row justify-content-center blue-grey lighten-5 py-3 mt-5" >
+
+        <h3><i class="fas fa-file-signature"></i> GESTIONAR CONTRATO</h3>
+
+    </div>
+    <form asp-action="Buscar", method="post">
+        <div class="row">
+            <div class="container -fluid mt-4" style="border: solid 1px #E6E8E8;">
+                <div class="row justify-content-center">
+                    <div class="form-group py-3">
+                        <label asp-for="Empleado.Dni">Ingrese el numero de DNI:</label>
+                        <input maxlength="8" minlenght="8" type="text" name="Dni" id="txtDni" asp-for="Empleado.Dni" class="form-control soloNumeros" placeholder="Ingresa el DNI">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <button type="button" class="btn btn-danger mr-1" onclick="buscarEmpleado()" id="btnBuscar"><i class="fas fa-search"></i> Buscar</button>
+            <button type="reset" class="btn btn-primary"> Limpiar</button>
+        </div>
+    </form>
+    <hr>
+
+
+
+

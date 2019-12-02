@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewData["Title"] = "GestionarPago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Modelo.Entidades.PeriodoPago periodoDePago = ViewBag.PeriodoDePago;
+    List<Modelo.Entidades.BoletaPago> listarBoletas = ViewBag.ListarBoletas;
+}
+
+
+<div class="row justify-content-center blue-grey lighten-5 py-3 mt-5">
+
+    <h3><i class="fas fa-coins"></i><strong>&nbsp;&nbsp;PROCESAR PAGOS</strong></h3>
+
+</div>
+
+<form method="post" action="/Pagos/GestionarPago">
+
+
+    <div class="row">
+
+        <div class="container -fluid mt-4" style="border: solid 1px #E6E8E8;">
+
+            <div class="row justify-content-center">
+
+                @*<div class="col-3">
+
+                        <div class="form-group text-center">
+                            <input type="text" value="asassa" />
+                            <label>Selecciona un periodo</label>
+                            <select class="custom-select custom-select-sm" id="cmbListarPeriodos" >
+                                <option value="0" selected>Selecciona un periodo</option>
+                                @if (periodoDePago!=null)
+                                {
+                                    <option value="@periodoDePago.IdPeriodoPago">@periodoDePago.FechaInicio.Day/@periodoDePago.FechaInicio.Month/@periodoDePago.FechaInicio.Year</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>*@
+
+                <div class="col-2 text-center">
+                    <div class="form-group">
+                        <label>Inicio:</label>
+                        <input class="form-control form-control-sm text-center" id="txtFechaInicioPeriodo" readonly placeholder="Fecha Inicio">
+                    </div>
+
+                </div>
+                <div class="col-2 text-center">
+                    <div class="form-group">
+                        <label>Termino:</label>
+                        <input class="form-control form-control-sm text-center" id="txtFechaTerminoPeriodo" readonly placeholder="Fecha Termino">
+                    </div>
+                </div>
+
+                <div class="col-2 text-center" hidden>
+                    <div class="form-group">
+                        <label>ID:</label>
+                        <input class="form-control form-control-sm text-center" name="idPeriodo" id="txtIdPeriodo">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center mt-3">
+
+        <button type="submit" class="btn btn-danger mr-1" id="btnProcesarPago"><i class="fas fa-sync"></i> &nbsp;Procesar</button>
+
+
+    </div>
+
+
+</form>
+
+
+<hr>
+@if (listarBoletas != null)
+{
+    <div class="table-responsive" id="tablaContratos" style="height: 500px;">
+
+        <table class="table table-sm table-striped">
+
+            <thead style="background: #2BBBAD; color:white;" class="text-center">
+                <tr>
+                    <th scope="col">Cod. Empleado</th>
+                    <th scope="col">Nomb. Empleado</th>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Total de Horas</th>
+                    <th scope="col">Valor Hora</th>
+                    <th scope="col">Sueldo Basico</th>
+                    <th scope="col">Total Ingresos</th>
+                    <th scope="col">Total Descuentos</th>
+                    <th scope="col">Sueldo Neto</th>
+                </tr>
+
+            </thead>
+            <tbody>
+
+
+                @foreach (var item in listarBoletas)
+                {
+                    <tr class="text-center">
+                        <td>@item.Contrato.Empleado.IdEmpleado</td>
+                        <td>@item.Contrato.Empleado.Nombre</td>
+                        <td>@item.Contrato.Empleado.Dni</td>
+                        <td>@item.TotalHoras</td>
+                        <td>@item.ValorHoras</td>
+                        <td>@item.CalcularSueldoBasico()</td>
+                        <td>@item.CalcularTotalDeIngresos()</td>
+                        <td>@item.CalcularTotalDeDescuentos()</td>
+                        <td>@item.CalcularSueldoNeto()</td>
+                    </tr>
+                }
+
+            </tbody>
+
+
+        </table>
+
+    </div>
+}
+
+<script src="~/js/GestionarPago.js" asp-append-version="true"></script>
