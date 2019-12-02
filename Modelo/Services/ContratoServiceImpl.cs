@@ -59,32 +59,37 @@ namespace Modelo.Services
             return ultimoContrato;
         }
 
+        private bool ValidacionConRespectoAlUltimoContrato(Contrato ultimoContrato, Contrato contrato)
+        {
+            if (ultimoContrato.ValidarVigenciaContrato() ||
+                !contrato.ValidarFechaInicioNuevoContrato(ultimoContrato.FechaFin))
+                return false;
+
+            return true;
+        }
+
+        private bool ValidarDatosDelNuevoContrato(Contrato contrato)
+        {
+            if (contrato.ValidarFechaFinNuevoContrato() &&
+                contrato.ValidarHorasContratadas() &&
+                contrato.ValidarValorHora(contrato.Empleado.GradoAcademico))
+                return true;
+            return false;
+        }
+
         public bool RegistrarContrato(Contrato contrato)
         {
             contrato.Empleado = _empleadoDao.BuscarEmpleadoPorID(contrato.IdEmpleado);
             Contrato ultimoContrato = _contratoDao.BuscarUltimoContratoDelEmpleado(contrato.IdEmpleado);
 
-            if (ultimoContrato != null && ultimoContrato.Estado != 0)
-            {
-                if (ultimoContrato.ValidarVigenciaContrato())
-                {
-                    return false;
-                } else if (!contrato.ValidarFechaInicioNuevoContrato(ultimoContrato.FechaFin))
-                {
-                    return false;
-                }
-            }
+            if (ultimoContrato != null)
+                if (!ValidacionConRespectoAlUltimoContrato(ultimoContrato, contrato)) return false;
 
-            if (contrato.ValidarFechaFinNuevoContrato())
+            if (ValidarDatosDelNuevoContrato(contrato))
             {
-                if (contrato.ValidarHorasContratadas())
-                {
-                    if (contrato.ValidarValorHora(contrato.Empleado.GradoAcademico))
-                    {
-                        _contratoDao.RegistrarContrato(contrato);
-                        return true;
-                    }
-                }
+                contrato.Estado = 1;
+                _contratoDao.RegistrarContrato(contrato);
+                return true;
             }
             return false;
         }
