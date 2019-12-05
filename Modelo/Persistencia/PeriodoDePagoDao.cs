@@ -44,8 +44,7 @@ namespace Modelo.Persistencia
             DateTime fechaActual = DateTime.Today;
             try
             {
-                return _context.PeriodoPago.Where(c => c.FechaInicio <= fechaActual && 
-                                                    c.FechaFin >= fechaActual && 
+                return _context.PeriodoPago.Where(c => c.FechaFin <= fechaActual && 
                                                     c.Estado == 1
                                                  ).FirstOrDefault();
             }
